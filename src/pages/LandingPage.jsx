@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+/* ✅ DROPDOWN DATA */
+const locations = [
+  "Mumbai",
+  "Delhi",
+  "Bangalore",
+  "Pune",
+  "Hyderabad",
+  "Chennai",
+  "Lucknow",
+  "Varanasi",
+];
+
 const niches = [
-  "Restaurant",
+  "Dentist",
   "Gym",
-  "Clinic",
-  "Salon",
   "Real Estate",
-  "Other",
+  "Restaurant",
+  "Coaching Center",
+  "Salon",
 ];
 
 const LandingPage = () => {
@@ -15,24 +27,20 @@ const LandingPage = () => {
     location: "",
     niche: "",
   });
-const navigate=useNavigate();
-  const [customNiche, setCustomNiche] = useState("");
+
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
+  /* ✅ VALIDATION */
   const validate = () => {
     let temp = {};
 
-    if (!formData.location.trim()) {
+    if (!formData.location) {
       temp.location = "Location is required";
     }
-    
 
     if (!formData.niche) {
       temp.niche = "Niche is required";
-    }
-
-    if (formData.niche === "Other" && !customNiche.trim()) {
-      temp.customNiche = "Custom niche is required";
     }
 
     setErrors(temp);
@@ -53,18 +61,15 @@ const navigate=useNavigate();
     }
   };
 
- const handleGenerate = (e) => {
-  e.preventDefault();
-  if (!validate()) return;
+  /* ✅ GENERATE LEADS */
+  const handleGenerate = (e) => {
+    e.preventDefault();
+    if (!validate()) return;
 
-  const finalNiche =
-    formData.niche === "Other" ? customNiche : formData.niche;
-
-  navigate(
-    `/results?location=${formData.location}&niche=${finalNiche}`
-  );
-};
-
+    navigate(
+      `/results?location=${formData.location}&niche=${formData.niche}`
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
@@ -76,7 +81,7 @@ const navigate=useNavigate();
         </button>
       </nav>
 
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* LEFT */}
         <div>
@@ -87,36 +92,26 @@ const navigate=useNavigate();
 
           <p className="mt-6 text-lg text-gray-600">
             Stop wasting hours searching for business leads. Our AI instantly
-            generates verified leads based on location and niche using advanced
-            LLM intelligence.
+            generates verified leads based on location and niche.
           </p>
 
-          {/* FEATURES (INLINE – NO EXTRA COMPONENT) */}
           <div className="mt-8 space-y-3">
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <p className="text-gray-700">
-                Location-based lead discovery
-              </p>
+              <p className="text-gray-700">Location-based lead discovery</p>
             </div>
-
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <p className="text-gray-700">
-                Niche-specific targeting
-              </p>
+              <p className="text-gray-700">Niche-specific targeting</p>
             </div>
-
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <p className="text-gray-700">
-                AI-ranked & verified businesses
-              </p>
+              <p className="text-gray-700">AI-ranked & verified businesses</p>
             </div>
           </div>
         </div>
 
-        {/* RIGHT – FORM CARD */}
+        {/* RIGHT – FORM */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h3 className="text-2xl font-bold text-gray-800">
             Generate Leads Instantly
@@ -125,22 +120,30 @@ const navigate=useNavigate();
             Powered by AI & LLM-based ranking
           </p>
 
-          {/* LOCATION */}
+          {/* LOCATION DROPDOWN */}
           <div className="mt-6">
             <label className="text-sm font-medium text-gray-700">
               Location
             </label>
-            <input
-              type="text"
+            <select
               name="location"
-              placeholder="e.g. Mumbai"
               value={formData.location}
               onChange={handleChange}
-              className="mt-2 w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-green-500 outline-none"
-            />
+              className="mt-2 w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-green-500 outline-none"
+            >
+              <option value="">Select location</option>
+              {locations.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc.charAt(0).toUpperCase() + loc.slice(1)}
+                </option>
+              ))}
+            </select>
+            {errors.location && (
+              <p className="text-sm text-red-500 mt-1">{errors.location}</p>
+            )}
           </div>
 
-          {/* NICHE */}
+          {/* NICHE DROPDOWN */}
           <div className="mt-4">
             <label className="text-sm font-medium text-gray-700">
               Business Niche
@@ -154,27 +157,14 @@ const navigate=useNavigate();
               <option value="">Select niche</option>
               {niches.map((n) => (
                 <option key={n} value={n}>
-                  {n}
+                  {n.charAt(0).toUpperCase() + n.slice(1)}
                 </option>
               ))}
             </select>
+            {errors.niche && (
+              <p className="text-sm text-red-500 mt-1">{errors.niche}</p>
+            )}
           </div>
-
-          {/* OTHER NICHE INPUT */}
-          {formData.niche === "Other" && (
-            <div className="mt-4">
-              <label className="text-sm font-medium text-gray-700">
-                Enter Custom Niche
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Digital Marketing Agency"
-                value={customNiche}
-                onChange={(e) => setCustomNiche(e.target.value)}
-                className="mt-2 w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-green-500 outline-none"
-              />
-            </div>
-          )}
 
           {/* BUTTON */}
           <button
