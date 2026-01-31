@@ -9,25 +9,25 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const BusinessCard = ({ business }) => {
-  const { name, phone, website, address, rating } = business;
+  const { business_name, mobile_no, website, location, rating } = business;
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100">
       
       {/* Business Name */}
-      {name && (
+      {business_name && (
         <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-4">
           <FontAwesomeIcon icon={faBuilding} className="text-green-600" />
-          {name}
+          {business_name}
         </h2>
       )}
 
       <div className="space-y-3 text-gray-700">
         {/* Phone */}
-        {phone && (
+        {mobile_no && (
           <p className="flex items-center gap-3">
             <FontAwesomeIcon icon={faPhone} className="text-green-500" />
-            {phone}
+            {mobile_no}
           </p>
         )}
 
@@ -47,10 +47,10 @@ const BusinessCard = ({ business }) => {
         )}
 
         {/* Address */}
-        {address && (
+        {location && (
           <p className="flex items-center gap-3">
             <FontAwesomeIcon icon={faLocationDot} className="text-green-500" />
-            {address}
+            {location}
           </p>
         )}
 

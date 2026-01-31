@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 
 const LeadResult = () => {
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
 
   const location = searchParams.get("location");
@@ -13,19 +14,22 @@ const LeadResult = () => {
   useEffect(() => {
     const fetchLeads = async () => {
       try {
-        const res = await axios.get(
+        setLoading(true);
+
+        const res = await axios.post(
           "http://localhost:5000/api/leads/get-leads",
           {
-            params: {
-              location,
-              niche
-            }
+            location,
+            niche
           }
         );
 
-        setResults(res.data);
+        setResults(res.data.leads || []);
       } catch (error) {
         console.error("Error fetching leads", error);
+        setResults([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -40,9 +44,11 @@ const LeadResult = () => {
         AI-Generated Business Leads
       </h1>
 
-      {results.length === 0 ? (
+      {loading ? (
+        <p className="text-center text-gray-500">Fetching verified leads...</p>
+      ) : results.length === 0 ? (
         <p className="text-center text-gray-500">
-          No results found.
+          No leads found for this location & niche.
         </p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
