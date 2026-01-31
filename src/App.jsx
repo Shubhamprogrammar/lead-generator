@@ -1,14 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import LandingPage from './pages/LandingPage';
+import LeadResult from './pages/LeadResult';
+import  {Routes,Route} from 'react-router-dom';
 
 function App() {
   
 
   return (
     <>
-    <h1 className='text-pink-500 text-2xl text-center'>AI Lead Generator</h1>
+    
+    <Routes>
+      <Route path='/' element={<LandingPage/>}/>
+      <Route path='/results' element={<LeadResult/>}/>
+    </Routes>
     </>
   )
 }
