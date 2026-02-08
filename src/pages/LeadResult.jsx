@@ -7,6 +7,7 @@ const LeadResult = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
   const location = searchParams.get("location");
   const niche = searchParams.get("niche");
@@ -15,7 +16,7 @@ const LeadResult = () => {
     const fetchLeads = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/leads/get-leads",
+          `${BACKEND_URL}/api/leads/get-leads`,
           {
             location,
             niche,
