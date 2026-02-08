@@ -1,15 +1,22 @@
-
 import {
   faBuilding,
   faPhone,
   faGlobe,
   faLocationDot,
-  faStar
+  faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const BusinessCard = ({ business }) => {
-  const { business_name, mobile_no, website, location, rating } = business;
+  const { name, mobile, website, address, lat, lng, date_created } = business;
+
+  const mapsUrl =
+    lat && lng
+      ? `https://www.google.com/maps?q=${lat},${lng}`
+      : address
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
+      : null;
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100">
@@ -24,10 +31,31 @@ const BusinessCard = ({ business }) => {
 
       <div className="space-y-3 text-gray-700">
         {/* Phone */}
-        {mobile_no && (
+        {mobile && (
           <p className="flex items-center gap-3">
             <FontAwesomeIcon icon={faPhone} className="text-green-500" />
-            {mobile_no}
+            <a href={`tel:${mobile}`} className="hover:underline">
+              {mobile}
+            </a>
+          </p>
+        )}
+
+        {/* Address + Maps */}
+        {address && (
+          <p className="flex items-center gap-3">
+            <FontAwesomeIcon icon={faLocationDot} className="text-green-500" />
+            {mapsUrl ? (
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:underline"
+              >
+                {address}
+              </a>
+            ) : (
+              address
+            )}
           </p>
         )}
 
@@ -46,19 +74,12 @@ const BusinessCard = ({ business }) => {
           </p>
         )}
 
-        {/* Address */}
-        {location && (
-          <p className="flex items-center gap-3">
-            <FontAwesomeIcon icon={faLocationDot} className="text-green-500" />
-            {location}
-          </p>
-        )}
-
-        {/* Rating */}
-        {rating && (
-          <p className="flex items-center gap-3">
-            <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
-            {rating} / 5
+        {/* Date Created */}
+        {date_created && (
+          <p className="flex items-center gap-3 text-sm text-gray-500">
+            <FontAwesomeIcon icon={faCalendarDays} />
+            Established on{" "}
+            {date_created}
           </p>
         )}
       </div>

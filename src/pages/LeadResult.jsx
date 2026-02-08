@@ -14,17 +14,15 @@ const LeadResult = () => {
   useEffect(() => {
     const fetchLeads = async () => {
       try {
-        setLoading(true);
-
         const res = await axios.post(
           "http://localhost:5000/api/leads/get-leads",
           {
             location,
-            niche
+            niche,
           }
         );
 
-        setResults(res.data.leads || []);
+        setResults(res.data.leads); 
       } catch (error) {
         console.error("Error fetching leads", error);
         setResults([]);

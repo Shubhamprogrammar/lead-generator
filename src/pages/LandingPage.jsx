@@ -1,17 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-/* ✅ DROPDOWN DATA */
-const locations = [
-  "Mumbai",
-  "Delhi",
-  "Bangalore",
-  "Pune",
-  "Hyderabad",
-  "Chennai",
-  "Lucknow",
-  "Varanasi",
-];
 
 const niches = [
   "Dentist",
@@ -20,12 +9,14 @@ const niches = [
   "Restaurant",
   "Coaching Center",
   "Salon",
+  "Others"
 ];
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({
     location: "",
     niche: "",
+    customNiche: ""
   });
 
   const navigate = useNavigate();
@@ -41,6 +32,10 @@ const LandingPage = () => {
 
     if (!formData.niche) {
       temp.niche = "Niche is required";
+    }
+
+    if (formData.niche === "Others" && !formData.customNiche.trim()) {
+      temp.customNiche = "Please enter your niche";
     }
 
     setErrors(temp);
@@ -66,9 +61,9 @@ const LandingPage = () => {
     e.preventDefault();
     if (!validate()) return;
 
-    navigate(
-      `/results?location=${formData.location}&niche=${formData.niche}`
-    );
+    const finalNiche = formData.niche === "Other" ? formData.customNiche : formData.niche;
+
+    navigate(`/results?location=${formData.location}&niche=${finalNiche}`);
   };
 
   return (
@@ -123,21 +118,16 @@ const LandingPage = () => {
           {/* LOCATION DROPDOWN */}
           <div className="mt-6">
             <label className="text-sm font-medium text-gray-700">
-              Location
+              Location (Enter City)
             </label>
-            <select
+            <input
+              type="text"
               name="location"
+              placeholder="Enter city or area"
               value={formData.location}
               onChange={handleChange}
               className="mt-2 w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-green-500 outline-none"
-            >
-              <option value="">Select location</option>
-              {locations.map((loc) => (
-                <option key={loc} value={loc}>
-                  {loc.charAt(0).toUpperCase() + loc.slice(1)}
-                </option>
-              ))}
-            </select>
+            />
             {errors.location && (
               <p className="text-sm text-red-500 mt-1">{errors.location}</p>
             )}
@@ -157,7 +147,7 @@ const LandingPage = () => {
               <option value="">Select niche</option>
               {niches.map((n) => (
                 <option key={n} value={n}>
-                  {n.charAt(0).toUpperCase() + n.slice(1)}
+                  {n}
                 </option>
               ))}
             </select>
@@ -165,6 +155,28 @@ const LandingPage = () => {
               <p className="text-sm text-red-500 mt-1">{errors.niche}</p>
             )}
           </div>
+
+          {/* CUSTOM NICHE INPUT (ONLY IF OTHER) */}
+          {formData.niche === "Others" && (
+            <div className="mt-4">
+              <label className="text-sm font-medium text-gray-700">
+                Enter Your Niche
+              </label>
+              <input
+                type="text"
+                name="customNiche"
+                placeholder="e.g. Pet Clinic, Law Firm"
+                value={formData.customNiche}
+                onChange={handleChange}
+                className="mt-2 w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-green-500 outline-none"
+              />
+              {errors.customNiche && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.customNiche}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* BUTTON */}
           <button
