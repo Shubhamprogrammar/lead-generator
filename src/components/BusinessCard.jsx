@@ -22,10 +22,10 @@ const BusinessCard = ({ business }) => {
     <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100">
       
       {/* Business Name */}
-      {business_name && (
+      {name && (
         <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-4">
           <FontAwesomeIcon icon={faBuilding} className="text-green-600" />
-          {business_name}
+          {name}
         </h2>
       )}
 
