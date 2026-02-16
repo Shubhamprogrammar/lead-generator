@@ -1,4 +1,4 @@
-# 🤖 Lead Generator
+# 🤖 AI Lead Generator
 
 AI Lead Generator is a smart web application that helps users discover business leads based on location and niche.
 It uses AI-powered processing to generate structured lead data, helping businesses, marketers, and startups find potential customers quickly and efficiently.
