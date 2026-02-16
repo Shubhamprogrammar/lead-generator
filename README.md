@@ -33,6 +33,6 @@ It uses AI-powered processing to generate structured lead data, helping business
 | Frontend | React + Vite |
 | Styling | Tailwind CSS |
 | State Management | React Hooks |
-| Backend | Python |
+| Backend | NodeJs |
 | AI Integration | Hugging Face API |
 
